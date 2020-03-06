@@ -16,8 +16,8 @@ BPAVLTree class >> with: anInteger [
 
 { #category : #adding }
 BPAVLTree >> add: anObject [
-	| parent current direction visited newNode |
-	parent := BPAVLNullNode new.
+	| parent current visited direction newNode |
+	parent := nil.
 	current := root.
 	visited := OrderedCollection new.
 	[ current isNullNode ]
@@ -32,11 +32,12 @@ BPAVLTree >> add: anObject [
 							parent := current.
 							current := current left ]
 						ifFalse: [ current model = anObject
-								ifTrue: [ ^ current model ] ] ] ].
+								ifTrue: [ ^ current model ]
+								ifFalse: [ self error ] ] ] ].
 	newNode := BPAVLTreeNode with: anObject.
 	parent
-		ifNull: [ root := newNode ]
-		ifNotNull: [ direction
+		ifNil: [ root := newNode ]
+		ifNotNil: [ direction
 				ifTrue: [ parent right: newNode ]
 				ifFalse: [ parent left: newNode ] ].
 	^ anObject
