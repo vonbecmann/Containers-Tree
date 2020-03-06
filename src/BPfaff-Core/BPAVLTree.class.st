@@ -22,12 +22,12 @@ BPAVLTree >> add: anObject [
 	visited := OrderedCollection new.
 	[ current isNullNode ]
 		whileFalse: [ current model < anObject
-				ifTrue: [ direction := true.
+				ifTrue: [ direction := 2.
 					visited addFirst: current.
 					parent := current.
 					current := current right ]
 				ifFalse: [ current model > anObject
-						ifTrue: [ direction := false.
+						ifTrue: [ direction := 1.
 							visited addFirst: current.
 							parent := current.
 							current := current left ]
@@ -37,9 +37,7 @@ BPAVLTree >> add: anObject [
 	newNode := BPAVLTreeNode with: anObject.
 	parent
 		ifNil: [ root := newNode ]
-		ifNotNil: [ direction
-				ifTrue: [ parent right: newNode ]
-				ifFalse: [ parent left: newNode ] ].
+		ifNotNil: [ parent childrenAt: direction put: newNode ].
 	^ anObject
 ]
 

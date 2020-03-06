@@ -13,6 +13,16 @@ BPAVLTreeNode class >> with: anObject [
 	^ self basicNew initializeModel: anObject
 ]
 
+{ #category : #accessing }
+BPAVLTreeNode >> childrenAt: index put: anAVLTreeNode [
+	children at: index put: anAVLTreeNode
+]
+
+{ #category : #accessing }
+BPAVLTreeNode >> height [
+	^ (self left height max: self right height) + 1
+]
+
 { #category : #testing }
 BPAVLTreeNode >> ifNull: firstBlock ifNotNull: secondBlock [ 
 	^ secondBlock cull: self

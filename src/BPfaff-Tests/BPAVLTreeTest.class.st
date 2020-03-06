@@ -50,6 +50,26 @@ BPAVLTreeTest >> testHeight [
 ]
 
 { #category : #tests }
+BPAVLTreeTest >> testHeight2 [
+	tree add: 3.
+	self assert: tree height equals: 1
+]
+
+{ #category : #tests }
+BPAVLTreeTest >> testHeight3 [
+	tree add: 3.
+	tree add: 2.
+	self assert: tree height equals: 2
+]
+
+{ #category : #tests }
+BPAVLTreeTest >> testHeight4 [
+	tree add: 3.
+	tree add: 5.
+	self assert: tree height equals: 2
+]
+
+{ #category : #tests }
 BPAVLTreeTest >> testIsEmpty [
 	self assert: tree isEmpty
 ]
