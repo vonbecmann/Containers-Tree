@@ -3,6 +3,7 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'model',
+		'children',
 		'left',
 		'right'
 	],
@@ -22,7 +23,7 @@ BPAVLTreeNode >> ifNull: firstBlock ifNotNull: secondBlock [
 { #category : #initialization }
 BPAVLTreeNode >> initialize [
 	super initialize.
-	left := right := BPAVLNullNode new
+	children := {BPAVLNullNode new. BPAVLNullNode new}
 ]
 
 { #category : #initialization }
@@ -38,12 +39,12 @@ BPAVLTreeNode >> isNullNode [
 
 { #category : #accessing }
 BPAVLTreeNode >> left [
-	^ left
+	^ children first
 ]
 
 { #category : #accessing }
 BPAVLTreeNode >> left: anAVLTreeNode [ 
-	left := anAVLTreeNode
+	children at: 1 put: anAVLTreeNode
 ]
 
 { #category : #accessing }
@@ -53,15 +54,15 @@ BPAVLTreeNode >> model [
 
 { #category : #accessing }
 BPAVLTreeNode >> right [
-	^ right
+	^ children second
 ]
 
 { #category : #accessing }
-BPAVLTreeNode >> right: anAVLTreeNode [ 
-	right := anAVLTreeNode
+BPAVLTreeNode >> right: anAVLTreeNode [
+	children at: 2 put: anAVLTreeNode
 ]
 
 { #category : #accessing }
 BPAVLTreeNode >> size [
-	^ 1 + left size + right size
+	^ 1 + self left size + self right size
 ]
