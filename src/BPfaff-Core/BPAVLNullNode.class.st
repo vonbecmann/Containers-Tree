@@ -10,11 +10,6 @@ BPAVLNullNode >> height [
 ]
 
 { #category : #testing }
-BPAVLNullNode >> ifNull: aBlock [
-	^ aBlock value
-]
-
-{ #category : #testing }
 BPAVLNullNode >> ifNull: firstBlock ifNotNull: secondBlock [
 	^ firstBlock value
 ]

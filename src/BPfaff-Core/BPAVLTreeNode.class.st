@@ -15,11 +15,6 @@ BPAVLTreeNode class >> with: anObject [
 ]
 
 { #category : #testing }
-BPAVLTreeNode >> ifNull: aBlock [
-	^ self
-]
-
-{ #category : #testing }
 BPAVLTreeNode >> ifNull: firstBlock ifNotNull: secondBlock [ 
 	^ secondBlock cull: self
 ]
