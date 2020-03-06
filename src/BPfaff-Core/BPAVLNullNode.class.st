@@ -9,9 +9,19 @@ BPAVLNullNode >> height [
 	^ 0
 ]
 
-{ #category : #'as yet unclassified' }
-BPAVLNullNode >> ifNull: aBlockClosure [
-	^ aBlockClosure value
+{ #category : #testing }
+BPAVLNullNode >> ifNull: aBlock [
+	^ aBlock value
+]
+
+{ #category : #testing }
+BPAVLNullNode >> ifNull: firstBlock ifNotNull: secondBlock [
+	^ firstBlock value
+]
+
+{ #category : #testing }
+BPAVLNullNode >> isNullNode [
+	^ true
 ]
 
 { #category : #accessing }

@@ -14,9 +14,33 @@ BPAVLTreeTest >> setUp [
 ]
 
 { #category : #tests }
-BPAVLTreeTest >> testAdd3 [
+BPAVLTreeTest >> testAdd1 [
 	self assert: tree size equals: 0.
 	tree add: 3.
+	self assert: tree size equals: 1
+]
+
+{ #category : #tests }
+BPAVLTreeTest >> testAdd2 [
+	tree add: 1.
+	self assert: tree size equals: 1.
+	tree add: 3.
+	self assert: tree size equals: 2
+]
+
+{ #category : #tests }
+BPAVLTreeTest >> testAdd3 [
+	tree add: 2.
+	self assert: tree size equals: 1.
+	tree add: 1.
+	self assert: tree size equals: 2
+]
+
+{ #category : #tests }
+BPAVLTreeTest >> testAdd4 [
+	tree add: 2.
+	self assert: tree size equals: 1.
+	tree add: 2.
 	self assert: tree size equals: 1
 ]
 
