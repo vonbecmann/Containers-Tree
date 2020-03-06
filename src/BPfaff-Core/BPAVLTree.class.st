@@ -52,6 +52,11 @@ BPAVLTree >> initialize [
 	root := BPAVLNullNode new
 ]
 
+{ #category : #testing }
+BPAVLTree >> isEmpty [
+	^ root isNullNode
+]
+
 { #category : #accessing }
 BPAVLTree >> size [
 	^ root size
