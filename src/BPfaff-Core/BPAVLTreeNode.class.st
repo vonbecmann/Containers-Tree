@@ -3,9 +3,7 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'model',
-		'children',
-		'left',
-		'right'
+		'children'
 	],
 	#category : #'BPfaff-Core'
 }
