@@ -84,3 +84,16 @@ BPAVLTreeTest >> testIsEmpty2 [
 BPAVLTreeTest >> testSize [
 	self assert: tree size equals: 0
 ]
+
+{ #category : #tests }
+BPAVLTreeTest >> testSize2 [
+	tree add: 3.
+	self assert: tree size equals: 1
+]
+
+{ #category : #tests }
+BPAVLTreeTest >> testSize3 [
+	tree add: 3.
+	tree add: 2.
+	self assert: tree size equals: 2
+]
