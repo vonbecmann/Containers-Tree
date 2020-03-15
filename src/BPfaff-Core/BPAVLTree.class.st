@@ -21,17 +21,20 @@ BPAVLTree >> add: anObject [
 	current := root.
 	visited := OrderedCollection new.
 	[ current isNullNode ]
-		whileFalse: [ current model < anObject
+		whileFalse: [ 
+			(self is: current model lessThan: anObject)
 				ifTrue: [ direction := 2.
 					visited addFirst: current.
 					parent := current.
 					current := current right ]
-				ifFalse: [ current model > anObject
+				ifFalse: [ 
+					(self is: current model greaterThan: anObject)
 						ifTrue: [ direction := 1.
 							visited addFirst: current.
 							parent := current.
 							current := current left ]
-						ifFalse: [ current model = anObject
+						ifFalse: [ 
+							(self is: current model equalTo: anObject)
 								ifTrue: [ ^ current model ]
 								ifFalse: [ self error ] ] ] ].
 	newNode := BPAVLTreeNode with: anObject.
@@ -49,6 +52,22 @@ BPAVLTree >> height [
 { #category : #initialization }
 BPAVLTree >> initialize [
 	root := BPAVLNullNode new
+]
+
+{ #category : #private }
+BPAVLTree >> is: firstObject equalTo: secondObject [
+	^ firstObject hash = secondObject hash
+		and: [ firstObject = secondObject ]
+]
+
+{ #category : #private }
+BPAVLTree >> is: firstObject greaterThan: secondObject [
+	^ firstObject hash > secondObject hash
+]
+
+{ #category : #private }
+BPAVLTree >> is: firstObject lessThan: secondObject [
+	^ firstObject hash < secondObject hash
 ]
 
 { #category : #testing }
