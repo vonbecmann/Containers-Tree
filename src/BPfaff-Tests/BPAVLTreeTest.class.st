@@ -112,6 +112,15 @@ BPAVLTreeTest >> testBalanceFactor4 [
 ]
 
 { #category : #tests }
+BPAVLTreeTest >> testBalanceFactor5 [
+	tree add: 3.
+	tree add: 4.
+	tree add: 1.
+	tree add: 2.
+	self assert: tree balanceFactor equals: -1
+]
+
+{ #category : #tests }
 BPAVLTreeTest >> testHeight [
 	self assert: tree height equals: 0
 ]
