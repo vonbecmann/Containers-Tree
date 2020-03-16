@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #accessing }
+BPAVLNullNode >> balanceFactor [
+	^ 0
+]
+
+{ #category : #accessing }
 BPAVLNullNode >> height [
 	^ 0
 ]

@@ -14,6 +14,13 @@ BPAVLTreeNode class >> with: anObject [
 ]
 
 { #category : #accessing }
+BPAVLTreeNode >> balanceFactor [
+	"balance factor: For any node in an AVL tree (see AVL tree), the difference between the height of the node's right subtree and left subtree. "
+
+	^ self right height - self left height
+]
+
+{ #category : #accessing }
 BPAVLTreeNode >> childrenAt: index put: anAVLTreeNode [
 	children at: index put: anAVLTreeNode
 ]
@@ -58,6 +65,14 @@ BPAVLTreeNode >> left: anAVLTreeNode [
 { #category : #accessing }
 BPAVLTreeNode >> model [
 	^ model
+]
+
+{ #category : #printing }
+BPAVLTreeNode >> printOn: aStream [
+	super printOn: aStream.
+	aStream nextPut: $(.
+	model printOn: aStream.
+	aStream nextPut: $)
 ]
 
 { #category : #accessing }

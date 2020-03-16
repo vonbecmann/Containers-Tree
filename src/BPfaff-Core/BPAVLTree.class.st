@@ -21,27 +21,85 @@ BPAVLTree >> add: anObject [
 	current := root.
 	visited := OrderedCollection new.
 	[ current isNullNode ]
-		whileFalse: [ 
-			(self is: current model lessThan: anObject)
+		whileFalse: [ (self is: current model lessThan: anObject)
 				ifTrue: [ direction := 2.
-					visited addFirst: current.
+					visited
+						addFirst:
+							{parent.
+							direction.
+							current}.
 					parent := current.
 					current := current right ]
-				ifFalse: [ 
-					(self is: current model greaterThan: anObject)
+				ifFalse: [ (self is: current model greaterThan: anObject)
 						ifTrue: [ direction := 1.
-							visited addFirst: current.
+							visited
+								addFirst:
+									{parent.
+									direction.
+									current}.
 							parent := current.
 							current := current left ]
-						ifFalse: [ 
-							(self is: current model equalTo: anObject)
+						ifFalse: [ (self is: current model equalTo: anObject)
 								ifTrue: [ ^ current model ]
 								ifFalse: [ self error ] ] ] ].
 	newNode := BPAVLTreeNode with: anObject.
 	parent
 		ifNil: [ root := newNode ]
 		ifNotNil: [ parent childrenAt: direction put: newNode ].
+	[ visited isEmpty ]
+		whileFalse: [ | currentBalanceFactor |
+			parent := visited first first.
+			direction := visited first second.
+			current := visited removeFirst third.
+			currentBalanceFactor := current balanceFactor.
+			currentBalanceFactor == -2
+				ifTrue: [ | leftChild leftBalanceFactor |
+					leftChild := current left.
+					leftBalanceFactor := leftChild balanceFactor.
+					leftBalanceFactor == -1
+						ifTrue: [ current left: leftChild right.
+							leftChild right: current.
+							parent
+								ifNil: [ root := leftChild ]
+								ifNotNil: [ parent childrenAt: direction put: leftChild ] ]
+						ifFalse: [ leftBalanceFactor == 1
+								ifTrue: [ | pivot |
+									pivot := leftChild right.
+									leftChild right: pivot left.
+									pivot left: leftChild.
+									current left: pivot right.
+									pivot right: current.
+									parent
+										ifNil: [ root := pivot ]
+										ifNotNil: [ parent childrenAt: direction put: pivot ] ] ] ]
+				ifFalse: [ 
+					currentBalanceFactor == 2
+						ifTrue: [ | rightChild rightBalanceFactor |
+							rightChild := current right.
+							rightBalanceFactor := rightChild balanceFactor.
+							rightBalanceFactor == 1
+								ifTrue: [ current right: rightChild left.
+									rightChild left: current.
+									parent
+										ifNil: [ root := rightChild ]
+										ifNotNil: [ parent childrenAt: direction put: rightChild ] ]
+								ifFalse: [ rightBalanceFactor == -1
+										ifTrue: [ | pivot |
+											pivot := rightChild left.
+											rightChild left: pivot right.
+											pivot right: rightChild.
+											current right: pivot left.
+											pivot left: current.
+											parent
+												ifNil: [ root := pivot ]
+												ifNotNil: [ parent childrenAt: direction put: pivot ] ] ] ]
+						ifFalse: [  ] ] ].
 	^ anObject
+]
+
+{ #category : #accessing }
+BPAVLTree >> balanceFactor [
+	^ root balanceFactor
 ]
 
 { #category : #accessing }
