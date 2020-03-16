@@ -86,6 +86,24 @@ BPAVLTreeNode >> right: anAVLTreeNode [
 ]
 
 { #category : #accessing }
+BPAVLTreeNode >> rotateLeft [
+	| pivot |
+	pivot := self right.
+	self right: pivot left.
+	pivot left: self.
+	^ pivot
+]
+
+{ #category : #accessing }
+BPAVLTreeNode >> rotateRight [
+	| pivot |
+	pivot := self left.
+	self left: pivot right.
+	pivot right: self.
+	^ pivot
+]
+
+{ #category : #accessing }
 BPAVLTreeNode >> size [
 	^ 1 + self left size + self right size
 ]
