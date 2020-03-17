@@ -87,6 +87,20 @@ BPAVLTreeNode >> right: anAVLTreeNode [
 
 { #category : #accessing }
 BPAVLTreeNode >> rotateLeft [
+	"
+3        
+ \
+ 5  
+/
+4
+=>
+  5
+ / 
+3
+ \
+ 4
+"
+
 	| pivot |
 	pivot := self right.
 	self right: pivot left.
@@ -96,6 +110,19 @@ BPAVLTreeNode >> rotateLeft [
 
 { #category : #accessing }
 BPAVLTreeNode >> rotateRight [
+	"
+  5        
+ / 
+3
+ \
+  4
+=>
+3
+ \ 
+  5
+ / 
+4
+"
 	| pivot |
 	pivot := self left.
 	self left: pivot right.
