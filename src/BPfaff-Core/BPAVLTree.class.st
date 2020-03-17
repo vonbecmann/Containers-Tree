@@ -64,11 +64,8 @@ BPAVLTree >> add: anObject [
 								ifNotNil: [ parent childrenAt: direction put: pivot ] ]
 						ifFalse: [ leftBalanceFactor == 1
 								ifTrue: [ | pivot |
-									pivot := leftChild right.
-									leftChild right: pivot left.
-									pivot left: leftChild.
-									current left: pivot right.
-									pivot right: current.
+									current left: leftChild rotateLeft.
+									pivot := current rotateRight.
 									parent
 										ifNil: [ root := pivot ]
 										ifNotNil: [ parent childrenAt: direction put: pivot ] ] ] ]
@@ -84,11 +81,8 @@ BPAVLTree >> add: anObject [
 										ifNotNil: [ parent childrenAt: direction put: pivot ] ]
 								ifFalse: [ rightBalanceFactor == -1
 										ifTrue: [ | pivot |
-											pivot := rightChild left.
-											rightChild left: pivot right.
-											pivot right: rightChild.
-											current right: pivot left.
-											pivot left: current.
+											current right: rightChild rotateRight.
+											pivot := current rotateLeft.
 											parent
 												ifNil: [ root := pivot ]
 												ifNotNil: [ parent childrenAt: direction put: pivot ] ] ] ] ] ].
