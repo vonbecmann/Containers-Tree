@@ -91,8 +91,7 @@ BPAVLTree >> add: anObject [
 											pivot left: current.
 											parent
 												ifNil: [ root := pivot ]
-												ifNotNil: [ parent childrenAt: direction put: pivot ] ] ] ]
-						ifFalse: [  ] ] ].
+												ifNotNil: [ parent childrenAt: direction put: pivot ] ] ] ] ] ].
 	^ anObject
 ]
 
