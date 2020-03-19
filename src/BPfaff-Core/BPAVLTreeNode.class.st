@@ -109,6 +109,12 @@ BPAVLTreeNode >> rotateLeft [
 ]
 
 { #category : #accessing }
+BPAVLTreeNode >> rotateLeftThenRight [
+	self left: self left rotateLeft.
+	^ self rotateRight
+]
+
+{ #category : #accessing }
 BPAVLTreeNode >> rotateRight [
 	"
   5        
@@ -128,6 +134,12 @@ BPAVLTreeNode >> rotateRight [
 	self left: pivot right.
 	pivot right: self.
 	^ pivot
+]
+
+{ #category : #accessing }
+BPAVLTreeNode >> rotateRightThenLeft [
+	self right: self right rotateRight.
+	^ self rotateLeft
 ]
 
 { #category : #accessing }
