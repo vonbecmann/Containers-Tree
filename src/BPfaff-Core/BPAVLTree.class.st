@@ -53,9 +53,8 @@ BPAVLTree >> add: anObject [
 			current := visited removeFirst third.
 			currentBalanceFactor := current balanceFactor.
 			currentBalanceFactor == -2
-				ifTrue: [ | leftChild leftBalanceFactor |
-					leftChild := current left.
-					leftBalanceFactor := leftChild balanceFactor.
+				ifTrue: [ | leftBalanceFactor |
+					leftBalanceFactor := current left balanceFactor.
 					leftBalanceFactor == -1
 						ifTrue: [ | pivot |
 							pivot := current rotateRight.
@@ -69,9 +68,8 @@ BPAVLTree >> add: anObject [
 										ifNil: [ root := pivot ]
 										ifNotNil: [ parent childrenAt: direction put: pivot ] ] ] ]
 				ifFalse: [ currentBalanceFactor == 2
-						ifTrue: [ | rightChild rightBalanceFactor |
-							rightChild := current right.
-							rightBalanceFactor := rightChild balanceFactor.
+						ifTrue: [ | rightBalanceFactor |
+							rightBalanceFactor := current right balanceFactor.
 							rightBalanceFactor == 1
 								ifTrue: [ | pivot |
 									pivot := current rotateLeft.
