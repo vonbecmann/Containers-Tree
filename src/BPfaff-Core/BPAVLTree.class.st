@@ -45,7 +45,7 @@ BPAVLTree >> add: anObject [
 		ifNil: [ root := self newTreeNodeWith: anObject ]
 		ifNotNil: [ parent childrenAt: direction put: (self newTreeNodeWith: anObject) ].
 	[ visited isEmpty ]
-		whileFalse: [ | currentBalanceFactor |
+		whileFalse: [ | currentBalanceFactor pivot |
 			parent := visited first first.
 			direction := visited first second.
 			current := visited removeFirst third.
@@ -54,35 +54,25 @@ BPAVLTree >> add: anObject [
 				ifTrue: [ | leftBalanceFactor |
 					leftBalanceFactor := current left balanceFactor.
 					leftBalanceFactor == -1
-						ifTrue: [ | pivot |
-							pivot := current rotateRight.
-							parent
-								ifNil: [ root := pivot ]
-								ifNotNil: [ parent childrenAt: direction put: pivot ] ]
+						ifTrue: [ pivot := current rotateRight ]
 						ifFalse: [ 
 							leftBalanceFactor == 1
-								ifTrue: [ | pivot |
-									pivot := current rotateLeftThenRight.
-									parent
-										ifNil: [ root := pivot ]
-										ifNotNil: [ parent childrenAt: direction put: pivot ] ] ] ]
+								ifTrue: [ pivot := current rotateLeftThenRight ] ] ]
 				ifFalse: [ 
 					currentBalanceFactor == 2
 						ifTrue: [ | rightBalanceFactor |
 							rightBalanceFactor := current right balanceFactor.
 							rightBalanceFactor == 1
-								ifTrue: [ | pivot |
-									pivot := current rotateLeft.
-									parent
-										ifNil: [ root := pivot ]
-										ifNotNil: [ parent childrenAt: direction put: pivot ] ]
+								ifTrue: [ pivot := current rotateLeft ]
 								ifFalse: [ 
 									rightBalanceFactor == -1
-										ifTrue: [ | pivot |
-											pivot := current rotateRightThenLeft.
-											parent
-												ifNil: [ root := pivot ]
-												ifNotNil: [ parent childrenAt: direction put: pivot ] ] ] ] ] ].
+										ifTrue: [ pivot := current rotateRightThenLeft ] ] ] ].
+			(currentBalanceFactor == -2 or: [currentBalanceFactor == 2]) 
+				ifTrue: [ 
+					parent
+						ifNil: [ root := pivot ]
+						ifNotNil: [ parent childrenAt: direction put: pivot ] ]
+			] .
 	^ anObject
 ]
 
