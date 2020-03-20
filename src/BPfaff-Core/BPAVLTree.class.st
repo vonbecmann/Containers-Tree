@@ -16,17 +16,19 @@ BPAVLTree class >> with: anInteger [
 
 { #category : #adding }
 BPAVLTree >> add: anObject [
-	| parent current visited direction |
+	| parent current direction nonZeroNode nonZeroParentNode nonZeroDirection pivot |
 	parent := nil.
 	current := root.
-	visited := OrderedCollection new.
 	[ current isNullNode ]
 		whileFalse: [ 
 			(self is: current model lessThan: anObject)
 				ifTrue: [ 
 					direction := 2.
 					current balanceFactor isZero
-						ifFalse: [ visited addFirst: (Array with: parent with: direction with:	current) ].
+						ifFalse: [ 
+							nonZeroNode := current.
+							nonZeroParentNode := parent.
+							nonZeroDirection := direction ].
 					parent := current.
 					current := current right ]
 				ifFalse: [ 
@@ -34,7 +36,10 @@ BPAVLTree >> add: anObject [
 						ifTrue: [ 
 							direction := 1.
 							current balanceFactor isZero
-								ifFalse: [ visited addFirst: (Array with: parent with: direction with:	current) ].
+								ifFalse: [ 
+									nonZeroNode := current.
+									nonZeroParentNode := parent.
+									nonZeroDirection := direction ].
 							parent := current.
 							current := current left ]
 						ifFalse: [ 
@@ -44,35 +49,31 @@ BPAVLTree >> add: anObject [
 	parent
 		ifNil: [ root := self newTreeNodeWith: anObject ]
 		ifNotNil: [ parent childrenAt: direction put: (self newTreeNodeWith: anObject) ].
-	[ visited isEmpty ]
-		whileFalse: [ | currentBalanceFactor pivot |
-			parent := visited first first.
-			direction := visited first second.
-			current := visited removeFirst third.
-			currentBalanceFactor := current balanceFactor.
-			currentBalanceFactor == -2
+	nonZeroNode isNil
+		ifFalse: [ | nonZeroBalanceFactor |
+			nonZeroBalanceFactor := nonZeroNode balanceFactor.
+			nonZeroBalanceFactor == -2
 				ifTrue: [ | leftBalanceFactor |
-					leftBalanceFactor := current left balanceFactor.
+					leftBalanceFactor := nonZeroNode left balanceFactor.
 					leftBalanceFactor == -1
-						ifTrue: [ pivot := current rotateRight ]
+						ifTrue: [ pivot := nonZeroNode rotateRight ]
 						ifFalse: [ 
 							leftBalanceFactor == 1
-								ifTrue: [ pivot := current rotateLeftThenRight ] ] ]
+								ifTrue: [ pivot := nonZeroNode rotateLeftThenRight ] ] ]
 				ifFalse: [ 
-					currentBalanceFactor == 2
+					nonZeroBalanceFactor == 2
 						ifTrue: [ | rightBalanceFactor |
-							rightBalanceFactor := current right balanceFactor.
+							rightBalanceFactor := nonZeroNode right balanceFactor.
 							rightBalanceFactor == 1
-								ifTrue: [ pivot := current rotateLeft ]
+								ifTrue: [ pivot := nonZeroNode rotateLeft ]
 								ifFalse: [ 
 									rightBalanceFactor == -1
-										ifTrue: [ pivot := current rotateRightThenLeft ] ] ] ].
-			(currentBalanceFactor == -2 or: [currentBalanceFactor == 2]) 
+										ifTrue: [ pivot := nonZeroNode rotateRightThenLeft ] ] ] ].
+			(nonZeroBalanceFactor == -2 or: [ nonZeroBalanceFactor == 2 ])
 				ifTrue: [ 
-					parent
+					nonZeroParentNode
 						ifNil: [ root := pivot ]
-						ifNotNil: [ parent childrenAt: direction put: pivot ] ]
-			] .
+						ifNotNil: [ nonZeroParentNode childrenAt: nonZeroDirection put: pivot ] ] ].
 	^ anObject
 ]
 
