@@ -7,6 +7,12 @@ Class {
 	#category : #'BPfaff-Tests'
 }
 
+{ #category : #running }
+BPTreeDictionaryTest >> setUp [
+	super setUp.
+	dict := BPTreeDictionary new
+]
+
 { #category : #tests }
 BPTreeDictionaryTest >> testAdd [
 	dict := BPTreeDictionary new.
@@ -17,15 +23,18 @@ BPTreeDictionaryTest >> testAdd [
 
 { #category : #tests }
 BPTreeDictionaryTest >> testAdd1 [
-	dict := BPTreeDictionary new.
 	dict add: #a -> 1.
 	self assert: (dict at: #a) equals: 1
 ]
 
 { #category : #tests }
 BPTreeDictionaryTest >> testAdd2 [
-	dict := BPTreeDictionary new.
 	dict add: #a -> 1.
 	dict add: #a -> 2.
 	self assert: (dict at: #a) equals: 2
+]
+
+{ #category : #tests }
+BPTreeDictionaryTest >> testAt [
+	self should: [ dict at: #notFound ] raise: Error
 ]
