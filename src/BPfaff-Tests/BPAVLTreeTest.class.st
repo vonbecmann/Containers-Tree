@@ -101,6 +101,18 @@ BPAVLTreeTest >> testAdd7 [
 ]
 
 { #category : #tests }
+BPAVLTreeTest >> testAdd71 [
+	tree add: 3.
+	tree add: 2.
+	tree add: 4.
+	tree add: 5.
+	tree add: 6.
+	self assert: tree size equals: 5.
+	self assert: tree height equals: 3.
+	self assert: tree balanceFactor equals: 1
+]
+
+{ #category : #tests }
 BPAVLTreeTest >> testAdd8 [
 	tree add: 4.
 	tree add: 6.

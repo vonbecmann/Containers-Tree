@@ -16,7 +16,7 @@ BPAVLTree class >> with: anInteger [
 
 { #category : #adding }
 BPAVLTree >> add: anObject [
-	| parent current direction nonZeroNode nonZeroParentNode nonZeroDirection pivot |
+	| parent current direction nonZeroNode nonZeroParentNode nonZeroDirection |
 	parent := nil.
 	current := root.
 	[ current isNullNode ]
@@ -50,7 +50,7 @@ BPAVLTree >> add: anObject [
 		ifNil: [ root := self newTreeNodeWith: anObject ]
 		ifNotNil: [ parent childrenAt: direction put: (self newTreeNodeWith: anObject) ].
 	nonZeroNode isNil
-		ifFalse: [ | nonZeroBalanceFactor |
+		ifFalse: [ | nonZeroBalanceFactor pivot |
 			nonZeroBalanceFactor := nonZeroNode balanceFactor.
 			nonZeroBalanceFactor == -2
 				ifTrue: [ | leftBalanceFactor |
