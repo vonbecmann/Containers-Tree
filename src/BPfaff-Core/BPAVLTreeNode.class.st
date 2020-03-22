@@ -34,24 +34,19 @@ BPAVLTreeNode >> balanceFactorBeZero [
 	balanceFactor := 0
 ]
 
-{ #category : #accessing }
+{ #category : #testing }
 BPAVLTreeNode >> calculateBalanceFactor [
 	"balance factor: For any node in an AVL tree (see AVL tree), the difference between the height of the node's right subtree and left subtree. "
 
 	^ self right height - self left height
 ]
 
-{ #category : #accessing }
+{ #category : #private }
 BPAVLTreeNode >> childAtDirection [
 	^ children at: direction
 ]
 
-{ #category : #accessing }
-BPAVLTreeNode >> childrenAt: index put: anAVLTreeNode [
-	children at: index put: anAVLTreeNode
-]
-
-{ #category : #accessing }
+{ #category : #private }
 BPAVLTreeNode >> childrenAtDirectionPut: anAVLTreeNode [
 	children at: direction put: anAVLTreeNode
 ]
@@ -82,12 +77,7 @@ BPAVLTreeNode >> depthFirstWithPreOrder: preOrderBlock andPostOrder: postOrderBl
 						visitStack addFirst: (Association key: child value: false) ] ] ]
 ]
 
-{ #category : #accessing }
-BPAVLTreeNode >> direction [
-	^ direction
-]
-
-{ #category : #accessing }
+{ #category : #private }
 BPAVLTreeNode >> direction: anObject [
 	direction := anObject
 ]
@@ -177,7 +167,7 @@ BPAVLTreeNode >> right: anAVLTreeNode [
 	children at: 2 put: anAVLTreeNode
 ]
 
-{ #category : #accessing }
+{ #category : #private }
 BPAVLTreeNode >> rotateLeft [
 	"
 3        
@@ -200,13 +190,13 @@ BPAVLTreeNode >> rotateLeft [
 	^ pivot
 ]
 
-{ #category : #accessing }
+{ #category : #private }
 BPAVLTreeNode >> rotateLeftThenRight [
 	self left: self left rotateLeft.
 	^ self rotateRight
 ]
 
-{ #category : #accessing }
+{ #category : #private }
 BPAVLTreeNode >> rotateRight [
 	"
   5        
@@ -228,7 +218,7 @@ BPAVLTreeNode >> rotateRight [
 	^ pivot
 ]
 
-{ #category : #accessing }
+{ #category : #private }
 BPAVLTreeNode >> rotateRightThenLeft [
 	self right: self right rotateRight.
 	^ self rotateLeft
@@ -239,7 +229,7 @@ BPAVLTreeNode >> size [
 	^ 1 + self left size + self right size
 ]
 
-{ #category : #accessing }
+{ #category : #private }
 BPAVLTreeNode >> updateBalanceFactor [
 	balanceFactor := 
 		direction == 1 
@@ -247,7 +237,7 @@ BPAVLTreeNode >> updateBalanceFactor [
 			ifFalse: [ balanceFactor + 1 ]
 ]
 
-{ #category : #accessing }
+{ #category : #private }
 BPAVLTreeNode >> updateBalanceFactorsUpTo: newNode [
 	| current |
 	current := self.
