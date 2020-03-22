@@ -82,6 +82,13 @@ BPAVLTree >> balanceFactor [
 	^ root balanceFactor
 ]
 
+{ #category : #visiting }
+BPAVLTree >> depthFirstWithPreOrder: preOrderBlock andPostOrder: postOrderBlock [
+	root
+		depthFirstWithPreOrder: preOrderBlock
+		andPostOrder: postOrderBlock
+]
+
 { #category : #accessing }
 BPAVLTree >> height [
 	^ root height

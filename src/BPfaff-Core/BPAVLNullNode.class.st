@@ -24,6 +24,13 @@ BPAVLNullNode >> isNullNode [
 	^ true
 ]
 
+{ #category : #visiting }
+BPAVLNullNode >> reversedChildrenDo: aBlock [
+	"nothing to do"
+
+	
+]
+
 { #category : #accessing }
 BPAVLNullNode >> size [
 	^ 0

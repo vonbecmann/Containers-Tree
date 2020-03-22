@@ -24,14 +24,16 @@ BPTreeDictionaryTest >> testAdd [
 { #category : #tests }
 BPTreeDictionaryTest >> testAdd1 [
 	dict add: #a -> 1.
-	self assert: (dict at: #a) equals: 1
+	self assert: (dict at: #a) equals: 1.
+	self assert: dict size equals: 1
 ]
 
 { #category : #tests }
 BPTreeDictionaryTest >> testAdd2 [
 	dict add: #a -> 1.
 	dict add: #a -> 2.
-	self assert: (dict at: #a) equals: 2
+	self assert: (dict at: #a) equals: 2.
+	self assert: dict size equals: 1
 ]
 
 { #category : #tests }
@@ -42,12 +44,14 @@ BPTreeDictionaryTest >> testAt [
 { #category : #tests }
 BPTreeDictionaryTest >> testAt1 [
 	dict at: #a put: 1.
-	self assert: (dict at: #a) equals: 1
+	self assert: (dict at: #a) equals: 1.
+	self assert: dict size equals: 1
 ]
 
 { #category : #tests }
 BPTreeDictionaryTest >> testAt2 [
 	dict at: #a put: 1.
 	dict at: #a put: 3.
-	self assert: (dict at: #a) equals: 3
+	self assert: (dict at: #a) equals: 3.
+	self assert: dict size equals: 1
 ]

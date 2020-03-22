@@ -26,8 +26,47 @@ BPAVLTreeNode >> childrenAt: index put: anAVLTreeNode [
 ]
 
 { #category : #accessing }
+BPAVLTreeNode >> childrenSize [
+	^ children size
+]
+
+{ #category : #visiting }
+BPAVLTreeNode >> depthFirstWithPreOrder: preOrderBlock andPostOrder: postOrderBlock [
+	| visitStack |
+	visitStack := OrderedCollection
+		with: (Association key: self value: false).
+	[ visitStack isEmpty ]
+		whileFalse: [ | element node visited |
+			element := visitStack first.
+			node := element key.
+			visited := element value.
+			visited
+				ifTrue: [ 
+					visitStack removeFirst.
+					postOrderBlock ifNotNil: [ postOrderBlock cull: node ] ]
+				ifFalse: [ 
+					element value: true.
+					preOrderBlock ifNotNil: [ preOrderBlock cull: node ].
+					node reversedChildrenDo: [ :child | 
+						visitStack addFirst: (Association key: child value: false) ] ] ]
+]
+
+{ #category : #accessing }
 BPAVLTreeNode >> height [
-	^ (self left height max: self right height) + 1
+	"	^ (self left height max: self right height) + 1"
+
+	| evalStack |
+	evalStack := OrderedCollection new.
+	self
+		depthFirstWithPreOrder: nil
+		andPostOrder: [ :node | 
+			node isNullNode
+				ifTrue: [ evalStack addFirst: node height ]
+				ifFalse: [ | heightChildren |
+					heightChildren := evalStack removeFirst: node childrenSize.
+					evalStack
+						addFirst: (heightChildren inject: 0 into: [ :max :each | max max: each ]) + 1 ] ].
+	^ evalStack first
 ]
 
 { #category : #testing }
@@ -73,6 +112,11 @@ BPAVLTreeNode >> printOn: aStream [
 	aStream nextPut: $(.
 	model printOn: aStream.
 	aStream nextPut: $)
+]
+
+{ #category : #visiting }
+BPAVLTreeNode >> reversedChildrenDo: aBlock [
+	children reverseDo: aBlock
 ]
 
 { #category : #accessing }
