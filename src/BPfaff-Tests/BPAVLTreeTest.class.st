@@ -17,7 +17,8 @@ BPAVLTreeTest >> setUp [
 BPAVLTreeTest >> testAdd1 [
 	self assert: tree size equals: 0.
 	tree add: 3.
-	self assert: tree size equals: 1
+	self assert: tree size equals: 1.
+	self assert: tree isBalanceFactorCorrect 
 ]
 
 { #category : #tests }
@@ -25,7 +26,8 @@ BPAVLTreeTest >> testAdd2 [
 	tree add: 1.
 	self assert: tree size equals: 1.
 	tree add: 3.
-	self assert: tree size equals: 2
+	self assert: tree size equals: 2.
+	self assert: tree isBalanceFactorCorrect 
 ]
 
 { #category : #tests }
@@ -33,7 +35,8 @@ BPAVLTreeTest >> testAdd3 [
 	tree add: 2.
 	self assert: tree size equals: 1.
 	tree add: 1.
-	self assert: tree size equals: 2
+	self assert: tree size equals: 2.
+	self assert: tree isBalanceFactorCorrect 
 ]
 
 { #category : #tests }
@@ -41,7 +44,8 @@ BPAVLTreeTest >> testAdd4 [
 	tree add: 2.
 	self assert: tree size equals: 1.
 	tree add: 2.
-	self assert: tree size equals: 1
+	self assert: tree size equals: 1.
+	self assert: tree isBalanceFactorCorrect 
 ]
 
 { #category : #tests }
@@ -51,8 +55,11 @@ BPAVLTreeTest >> testAdd5 [
 	tree add: 4.
 	self assert: tree size equals: 3.
 	self assert: tree height equals: 2.
-	self assert: tree balanceFactor equals: 0
-	
+	self assert: tree balanceFactor equals: 0.
+	self assert: tree isBalanceFactorCorrect.
+	self
+		assert: tree arrayRepresentation
+		equals: #(5 #(#(4 #(#() #())) #(6 #(#() #()))))
 ]
 
 { #category : #tests }
@@ -64,7 +71,11 @@ BPAVLTreeTest >> testAdd51 [
 	tree add: 4.
 	self assert: tree size equals: 5.
 	self assert: tree height equals: 3.
-	self assert: tree balanceFactor equals: -1
+	self assert: tree balanceFactor equals: -1.
+	self assert: tree isBalanceFactorCorrect.
+	self
+		assert: tree arrayRepresentation
+		equals: #(7 #(#(5 #(#(4 #(#() #())) #(6 #(#() #())))) #(8 #(#() #()))))
 ]
 
 { #category : #tests }
@@ -74,8 +85,11 @@ BPAVLTreeTest >> testAdd6 [
 	tree add: 5.
 	self assert: tree size equals: 3.
 	self assert: tree height equals: 2.
-	self assert: tree balanceFactor equals: 0
-	
+	self assert: tree balanceFactor equals: 0.
+	self assert: tree isBalanceFactorCorrect.
+	self
+		assert: tree arrayRepresentation
+		equals: #(5 #(#(4 #(#() #())) #(6 #(#() #()))))
 ]
 
 { #category : #tests }
@@ -87,7 +101,11 @@ BPAVLTreeTest >> testAdd61 [
 	tree add: 5.
 	self assert: tree size equals: 5.
 	self assert: tree height equals: 3.
-	self assert: tree balanceFactor equals: -1
+	self assert: tree balanceFactor equals: -1.
+	self assert: tree isBalanceFactorCorrect.
+	self
+		assert: tree arrayRepresentation
+		equals: #(7 #(#(5 #(#(4 #(#() #())) #(6 #(#() #())))) #(8 #(#() #()))))
 ]
 
 { #category : #tests }
@@ -97,7 +115,11 @@ BPAVLTreeTest >> testAdd7 [
 	tree add: 6.
 	self assert: tree size equals: 3.
 	self assert: tree height equals: 2.
-	self assert: tree balanceFactor equals: 0
+	self assert: tree balanceFactor equals: 0.
+	self assert: tree isBalanceFactorCorrect.
+	self
+		assert: tree arrayRepresentation
+		equals: #(5 #(#(4 #(#() #())) #(6 #(#() #()))))
 ]
 
 { #category : #tests }
@@ -109,7 +131,11 @@ BPAVLTreeTest >> testAdd71 [
 	tree add: 6.
 	self assert: tree size equals: 5.
 	self assert: tree height equals: 3.
-	self assert: tree balanceFactor equals: 1
+	self assert: tree balanceFactor equals: 1.
+	self assert: tree isBalanceFactorCorrect.
+	self
+		assert: tree arrayRepresentation
+		equals: #(3 #(#(2 #(#() #())) #(5 #(#(4 #(#() #())) #(6 #(#() #()))))))
 ]
 
 { #category : #tests }
@@ -119,7 +145,20 @@ BPAVLTreeTest >> testAdd8 [
 	tree add: 5.
 	self assert: tree size equals: 3.
 	self assert: tree height equals: 2.
-	self assert: tree balanceFactor equals: 0
+	self assert: tree balanceFactor equals: 0.
+	self assert: tree isBalanceFactorCorrect.
+	self
+		assert: tree arrayRepresentation
+		equals: #(5 #(#(4 #(#() #())) #(6 #(#() #()))))
+]
+
+{ #category : #tests }
+BPAVLTreeTest >> testArrayRepresentation [
+	self assert: tree size equals: 0.
+	self assert: tree height equals: 0.
+	self assert: tree balanceFactor equals: 0.
+	self assert: tree isBalanceFactorCorrect.
+	self assert: tree arrayRepresentation equals: #()
 ]
 
 { #category : #tests }

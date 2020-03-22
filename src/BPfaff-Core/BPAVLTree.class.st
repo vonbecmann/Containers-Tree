@@ -16,65 +16,111 @@ BPAVLTree class >> with: anInteger [
 
 { #category : #adding }
 BPAVLTree >> add: anObject [
-	| parent current direction nonZeroNode nonZeroParentNode nonZeroDirection |
+	| parent current nonZeroNode nonZeroParentNode newNode pivot |
 	parent := nil.
-	current := root.
+	current := nonZeroNode := nonZeroParentNode := root.
 	[ current isNullNode ]
 		whileFalse: [ 
 			(self is: current model lessThan: anObject)
 				ifTrue: [ 
-					direction := 2.
+					current direction: 2.
 					current balanceFactor isZero
 						ifFalse: [ 
 							nonZeroNode := current.
-							nonZeroParentNode := parent.
-							nonZeroDirection := direction ].
+							nonZeroParentNode := parent ].
 					parent := current.
 					current := current right ]
 				ifFalse: [ 
 					(self is: current model greaterThan: anObject)
 						ifTrue: [ 
-							direction := 1.
+							current direction: 1.
 							current balanceFactor isZero
 								ifFalse: [ 
 									nonZeroNode := current.
-									nonZeroParentNode := parent.
-									nonZeroDirection := direction ].
+									nonZeroParentNode := parent ].
 							parent := current.
 							current := current left ]
 						ifFalse: [ 
 							(self is: current model equalTo: anObject)
 								ifTrue: [ ^ current model ]
 								ifFalse: [ self error ] ] ] ].
+	newNode := self newTreeNodeWith: anObject.
 	parent
-		ifNil: [ root := self newTreeNodeWith: anObject ]
-		ifNotNil: [ parent childrenAt: direction put: (self newTreeNodeWith: anObject) ].
-	nonZeroNode isNil
-		ifFalse: [ | nonZeroBalanceFactor pivot |
-			nonZeroBalanceFactor := nonZeroNode balanceFactor.
-			nonZeroBalanceFactor == -2
-				ifTrue: [ | leftBalanceFactor |
-					leftBalanceFactor := nonZeroNode left balanceFactor.
-					leftBalanceFactor == -1
-						ifTrue: [ pivot := nonZeroNode rotateRight ]
-						ifFalse: [ 
-							leftBalanceFactor == 1
-								ifTrue: [ pivot := nonZeroNode rotateLeftThenRight ] ] ]
-				ifFalse: [ 
-					nonZeroBalanceFactor == 2
-						ifTrue: [ | rightBalanceFactor |
-							rightBalanceFactor := nonZeroNode right balanceFactor.
-							rightBalanceFactor == 1
-								ifTrue: [ pivot := nonZeroNode rotateLeft ]
-								ifFalse: [ 
-									rightBalanceFactor == -1
-										ifTrue: [ pivot := nonZeroNode rotateRightThenLeft ] ] ] ].
-			(nonZeroBalanceFactor == -2 or: [ nonZeroBalanceFactor == 2 ])
+		ifNil: [ root := newNode ]
+		ifNotNil: [ parent childrenAtDirectionPut: newNode ].
+	nonZeroNode ifNull: [ ^ anObject ].
+	nonZeroNode updateBalanceFactorsUpTo: newNode.
+	nonZeroNode balanceFactor == -2
+		ifTrue: [ | leftChild |
+			leftChild := nonZeroNode left.
+			leftChild balanceFactor == -1
 				ifTrue: [ 
-					nonZeroParentNode
-						ifNil: [ root := pivot ]
-						ifNotNil: [ nonZeroParentNode childrenAt: nonZeroDirection put: pivot ] ] ].
+					pivot := nonZeroNode rotateRight.
+					leftChild balanceFactorBeZero.
+					nonZeroNode balanceFactorBeZero ]
+				ifFalse: [ 
+					leftChild balanceFactor == 1
+						ifTrue: [ 
+							pivot := nonZeroNode rotateLeftThenRight.
+							pivot balanceFactor == -1
+							 ifTrue: [ 
+								leftChild balanceFactorBeZero.
+								nonZeroNode balanceFactor: 1 ].
+							pivot balanceFactor == 0
+							 ifTrue: [
+								leftChild balanceFactorBeZero.
+								nonZeroNode balanceFactorBeZero ].
+							pivot balanceFactor == 1
+							 ifTrue: [ 
+								leftChild balanceFactor: -1.
+								nonZeroNode balanceFactorBeZero ].
+						   pivot balanceFactorBeZero ] ] ]
+		ifFalse: [ 
+			nonZeroNode balanceFactor == 2
+				ifTrue: [ | rightChild |
+					rightChild := nonZeroNode right.
+					rightChild balanceFactor == 1
+						ifTrue: [ 
+							pivot := nonZeroNode rotateLeft.
+							rightChild balanceFactorBeZero.
+							nonZeroNode balanceFactorBeZero ]
+						ifFalse: [ 
+							rightChild balanceFactor == -1
+								ifTrue: [ 
+									pivot := nonZeroNode rotateRightThenLeft.
+									pivot balanceFactor == 1 
+										ifTrue: [ 
+											rightChild balanceFactorBeZero.
+											nonZeroNode balanceFactor: -1  ].
+									pivot balanceFactor == 0 
+										ifTrue: [
+											rightChild balanceFactorBeZero.
+											nonZeroNode balanceFactorBeZero ].
+									pivot balanceFactor == -1 
+										ifTrue: [ 
+											rightChild balanceFactor: 1.
+											nonZeroNode balanceFactorBeZero ].
+									pivot balanceFactorBeZero ] ] ]
+				ifFalse: [ ^ anObject ] ].
+	nonZeroParentNode
+		ifNil: [ root := pivot ]
+		ifNotNil: [ nonZeroParentNode childrenAtDirectionPut: pivot ]. 
 	^ anObject
+]
+
+{ #category : #testing }
+BPAVLTree >> arrayRepresentation [
+	| evalStack |
+	evalStack := OrderedCollection new.
+	self
+		depthFirstWithPreOrder: nil
+		andPostOrder: [ :node | 
+			node isNullNode
+				ifTrue: [ evalStack addFirst: #() ]
+				ifFalse: [ | heightChildren |
+					heightChildren := evalStack removeFirst: node childrenSize.
+					evalStack addFirst: (Array with: node model with: heightChildren reversed) ] ].
+	^ evalStack first
 ]
 
 { #category : #accessing }
@@ -84,9 +130,23 @@ BPAVLTree >> balanceFactor [
 
 { #category : #visiting }
 BPAVLTree >> depthFirstWithPreOrder: preOrderBlock andPostOrder: postOrderBlock [
-	root
-		depthFirstWithPreOrder: preOrderBlock
-		andPostOrder: postOrderBlock
+	| visitStack |
+	visitStack := OrderedCollection
+		with: (Association key: root value: false).
+	[ visitStack isEmpty ]
+		whileFalse: [ | element node visited |
+			element := visitStack first.
+			node := element key.
+			visited := element value.
+			visited
+				ifTrue: [ 
+					visitStack removeFirst.
+					postOrderBlock ifNotNil: [ postOrderBlock cull: node ] ]
+				ifFalse: [ 
+					element value: true.
+					preOrderBlock ifNotNil: [ preOrderBlock cull: node ].
+					node reversedChildrenDo: [ :child | 
+						visitStack addFirst: (Association key: child value: false) ] ] ]
 ]
 
 { #category : #accessing }
@@ -113,6 +173,11 @@ BPAVLTree >> is: firstObject greaterThan: secondObject [
 { #category : #private }
 BPAVLTree >> is: firstObject lessThan: secondObject [
 	^ firstObject hash < secondObject hash
+]
+
+{ #category : #testing }
+BPAVLTree >> isBalanceFactorCorrect [
+	^ root balanceFactor = root calculateBalanceFactor
 ]
 
 { #category : #testing }

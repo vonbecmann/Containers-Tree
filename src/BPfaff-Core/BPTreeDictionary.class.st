@@ -4,69 +4,6 @@ Class {
 	#category : #'BPfaff-Core'
 }
 
-{ #category : #adding }
-BPTreeDictionary >> add: anAssoc [
-	| parent current direction nonZeroNode nonZeroParentNode nonZeroDirection |
-	parent := nil.
-	current := root.
-	[ current isNullNode ]
-		whileFalse: [ 
-			(self is: current model lessThan: anAssoc)
-				ifTrue: [ 
-					direction := 2.
-					current balanceFactor isZero
-						ifFalse: [ 
-							nonZeroNode := current.
-							nonZeroParentNode := parent.
-							nonZeroDirection := direction ].
-					parent := current.
-					current := current right ]
-				ifFalse: [ 
-					(self is: current model greaterThan: anAssoc)
-						ifTrue: [ 
-							direction := 1.
-							current balanceFactor isZero
-								ifFalse: [ 
-									nonZeroNode := current.
-									nonZeroParentNode := parent.
-									nonZeroDirection := direction ].
-							parent := current.
-							current := current left ]
-						ifFalse: [ 
-							(self is: current model equalTo: anAssoc)
-								ifTrue: [ ^ current model ]
-								ifFalse: [ self error ] ] ] ].
-	parent
-		ifNil: [ root := self newTreeNodeWith: anAssoc ]
-		ifNotNil: [ parent childrenAt: direction put: (self newTreeNodeWith: anAssoc) ].
-	nonZeroNode isNil
-		ifFalse: [ | nonZeroBalanceFactor pivot |
-			nonZeroBalanceFactor := nonZeroNode balanceFactor.
-			nonZeroBalanceFactor == -2
-				ifTrue: [ | leftBalanceFactor |
-					leftBalanceFactor := nonZeroNode left balanceFactor.
-					leftBalanceFactor == -1
-						ifTrue: [ pivot := nonZeroNode rotateRight ]
-						ifFalse: [ 
-							leftBalanceFactor == 1
-								ifTrue: [ pivot := nonZeroNode rotateLeftThenRight ] ] ]
-				ifFalse: [ 
-					nonZeroBalanceFactor == 2
-						ifTrue: [ | rightBalanceFactor |
-							rightBalanceFactor := nonZeroNode right balanceFactor.
-							rightBalanceFactor == 1
-								ifTrue: [ pivot := nonZeroNode rotateLeft ]
-								ifFalse: [ 
-									rightBalanceFactor == -1
-										ifTrue: [ pivot := nonZeroNode rotateRightThenLeft ] ] ] ].
-			(nonZeroBalanceFactor == -2 or: [ nonZeroBalanceFactor == 2 ])
-				ifTrue: [ 
-					nonZeroParentNode
-						ifNil: [ root := pivot ]
-						ifNotNil: [ nonZeroParentNode childrenAt: nonZeroDirection put: pivot ] ] ].
-	^ anAssoc
-]
-
 { #category : #accessing }
 BPTreeDictionary >> at: key [
 	| current |

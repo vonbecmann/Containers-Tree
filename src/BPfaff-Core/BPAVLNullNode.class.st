@@ -9,9 +9,19 @@ BPAVLNullNode >> balanceFactor [
 	^ 0
 ]
 
+{ #category : #'as yet unclassified' }
+BPAVLNullNode >> calculateBalanceFactor [
+	^ self balanceFactor
+]
+
 { #category : #accessing }
 BPAVLNullNode >> height [
 	^ 0
+]
+
+{ #category : #testing }
+BPAVLNullNode >> ifNull: aBlock [
+	^ aBlock cull: self
 ]
 
 { #category : #testing }

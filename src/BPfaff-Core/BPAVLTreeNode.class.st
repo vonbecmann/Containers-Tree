@@ -3,7 +3,9 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'model',
-		'children'
+		'children',
+		'balanceFactor',
+		'direction'
 	],
 	#category : #'BPfaff-Core'
 }
@@ -17,12 +19,41 @@ BPAVLTreeNode class >> with: anObject [
 BPAVLTreeNode >> balanceFactor [
 	"balance factor: For any node in an AVL tree (see AVL tree), the difference between the height of the node's right subtree and left subtree. "
 
+	"^ self right height - self left height"
+
+	^ balanceFactor
+]
+
+{ #category : #accessing }
+BPAVLTreeNode >> balanceFactor: anInteger [
+	balanceFactor := anInteger
+]
+
+{ #category : #accessing }
+BPAVLTreeNode >> balanceFactorBeZero [
+	balanceFactor := 0
+]
+
+{ #category : #accessing }
+BPAVLTreeNode >> calculateBalanceFactor [
+	"balance factor: For any node in an AVL tree (see AVL tree), the difference between the height of the node's right subtree and left subtree. "
+
 	^ self right height - self left height
+]
+
+{ #category : #accessing }
+BPAVLTreeNode >> childAtDirection [
+	^ children at: direction
 ]
 
 { #category : #accessing }
 BPAVLTreeNode >> childrenAt: index put: anAVLTreeNode [
 	children at: index put: anAVLTreeNode
+]
+
+{ #category : #accessing }
+BPAVLTreeNode >> childrenAtDirectionPut: anAVLTreeNode [
+	children at: direction put: anAVLTreeNode
 ]
 
 { #category : #accessing }
@@ -52,6 +83,16 @@ BPAVLTreeNode >> depthFirstWithPreOrder: preOrderBlock andPostOrder: postOrderBl
 ]
 
 { #category : #accessing }
+BPAVLTreeNode >> direction [
+	^ direction
+]
+
+{ #category : #accessing }
+BPAVLTreeNode >> direction: anObject [
+	direction := anObject
+]
+
+{ #category : #accessing }
 BPAVLTreeNode >> height [
 	"	^ (self left height max: self right height) + 1"
 
@@ -70,6 +111,11 @@ BPAVLTreeNode >> height [
 ]
 
 { #category : #testing }
+BPAVLTreeNode >> ifNull: aBlock [
+	^ self
+]
+
+{ #category : #testing }
 BPAVLTreeNode >> ifNull: firstBlock ifNotNull: secondBlock [ 
 	^ secondBlock cull: self
 ]
@@ -77,7 +123,9 @@ BPAVLTreeNode >> ifNull: firstBlock ifNotNull: secondBlock [
 { #category : #initialization }
 BPAVLTreeNode >> initialize [
 	super initialize.
-	children := {BPAVLNullNode new. BPAVLNullNode new}
+	children := {BPAVLNullNode new. BPAVLNullNode new}.
+	balanceFactor := 0.
+	direction := 1
 ]
 
 { #category : #initialization }
@@ -189,4 +237,22 @@ BPAVLTreeNode >> rotateRightThenLeft [
 { #category : #accessing }
 BPAVLTreeNode >> size [
 	^ 1 + self left size + self right size
+]
+
+{ #category : #accessing }
+BPAVLTreeNode >> updateBalanceFactor [
+	balanceFactor := 
+		direction == 1 
+			ifTrue: [ balanceFactor - 1 ] 
+			ifFalse: [ balanceFactor + 1 ]
+]
+
+{ #category : #accessing }
+BPAVLTreeNode >> updateBalanceFactorsUpTo: newNode [
+	| current |
+	current := self.
+	[ current isNullNode or: [ current == newNode ] ]
+		whileFalse: [ 
+			current updateBalanceFactor.
+			current := current childAtDirection ]
 ]
