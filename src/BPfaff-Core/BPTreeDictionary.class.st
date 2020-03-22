@@ -85,6 +85,12 @@ BPTreeDictionary >> at: key [
 	self errorKeyNotFound: key
 ]
 
+{ #category : #accessing }
+BPTreeDictionary >> at: key put: anObject [
+	self add: (Association basicNew key: key value: anObject).
+	^ anObject
+]
+
 { #category : #private }
 BPTreeDictionary >> errorKeyNotFound: aKey [
 	self

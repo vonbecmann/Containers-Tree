@@ -38,3 +38,16 @@ BPTreeDictionaryTest >> testAdd2 [
 BPTreeDictionaryTest >> testAt [
 	self should: [ dict at: #notFound ] raise: Error
 ]
+
+{ #category : #tests }
+BPTreeDictionaryTest >> testAt1 [
+	dict at: #a put: 1.
+	self assert: (dict at: #a) equals: 1
+]
+
+{ #category : #tests }
+BPTreeDictionaryTest >> testAt2 [
+	dict at: #a put: 1.
+	dict at: #a put: 3.
+	self assert: (dict at: #a) equals: 3
+]
