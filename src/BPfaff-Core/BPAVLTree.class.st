@@ -7,17 +7,17 @@ Class {
 	#category : #'BPfaff-Core'
 }
 
-{ #category : #'as yet unclassified' }
-BPAVLTree class >> with: anInteger [
+{ #category : #'instance creation' }
+BPAVLTree class >> with: anObject [
 	^ self new
-		add: anInteger;
+		add: anObject;
 		yourself
 ]
 
 { #category : #adding }
 BPAVLTree >> add: anObject [
 	| parent current nonZeroNode nonZeroParentNode newNode pivot |
-	parent := nil.
+	parent := BPAVLNullNode uniqueInstance.
 	current := nonZeroNode := nonZeroParentNode := root.
 	[ current isNullNode ]
 		whileFalse: [ 
@@ -46,8 +46,8 @@ BPAVLTree >> add: anObject [
 								ifFalse: [ self error ] ] ] ].
 	newNode := self newTreeNodeWith: anObject.
 	parent
-		ifNil: [ root := newNode ]
-		ifNotNil: [ parent childrenAtDirectionPut: newNode ].
+		ifNull: [ root := newNode ]
+		ifNotNull: [ parent childrenAtDirectionPut: newNode ].
 	nonZeroNode ifNull: [ ^ anObject ].
 	nonZeroNode updateBalanceFactorsUpTo: newNode.
 	nonZeroNode balanceFactor == -2
@@ -103,8 +103,8 @@ BPAVLTree >> add: anObject [
 									pivot balanceFactorBeZero ] ] ]
 				ifFalse: [ ^ anObject ] ].
 	nonZeroParentNode
-		ifNil: [ root := pivot ]
-		ifNotNil: [ nonZeroParentNode childrenAtDirectionPut: pivot ]. 
+		ifNull: [ root := pivot ]
+		ifNotNull: [ nonZeroParentNode childrenAtDirectionPut: pivot ]. 
 	^ anObject
 ]
 

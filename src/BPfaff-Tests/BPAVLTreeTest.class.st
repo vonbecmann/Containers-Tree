@@ -153,6 +153,22 @@ BPAVLTreeTest >> testAdd8 [
 ]
 
 { #category : #tests }
+BPAVLTreeTest >> testAdd81 [
+	tree add: 3.
+	tree add: 2.
+	tree add: 4.
+	tree add: 6.
+	tree add: 5.
+	self assert: tree size equals: 5.
+	self assert: tree height equals: 3.
+	self assert: tree balanceFactor equals: 1.
+	self assert: tree isBalanceFactorCorrect.
+	self
+		assert: tree arrayRepresentation
+		equals: #(3 #(#(2 #(#() #())) #(5 #(#(4 #(#() #())) #(6 #(#() #()))))))
+]
+
+{ #category : #tests }
 BPAVLTreeTest >> testArrayRepresentation [
 	self assert: tree size equals: 0.
 	self assert: tree height equals: 0.
