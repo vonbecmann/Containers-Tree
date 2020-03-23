@@ -78,8 +78,8 @@ BPAVLTreeNode >> depthFirstWithPreOrder: preOrderBlock andPostOrder: postOrderBl
 ]
 
 { #category : #private }
-BPAVLTreeNode >> direction: anObject [
-	direction := anObject
+BPAVLTreeNode >> direction: anInteger [
+	direction := anInteger
 ]
 
 { #category : #accessing }
@@ -113,7 +113,7 @@ BPAVLTreeNode >> ifNull: firstBlock ifNotNull: secondBlock [
 { #category : #initialization }
 BPAVLTreeNode >> initialize [
 	super initialize.
-	children := {BPAVLNullNode new. BPAVLNullNode new}.
+	children := {BPAVLNullNode uniqueInstance. BPAVLNullNode uniqueInstance}.
 	balanceFactor := 0.
 	direction := 1
 ]
@@ -131,7 +131,7 @@ BPAVLTreeNode >> isNullNode [
 
 { #category : #accessing }
 BPAVLTreeNode >> left [
-	^ children first
+	^ children at: 1
 ]
 
 { #category : #accessing }
@@ -159,7 +159,7 @@ BPAVLTreeNode >> reversedChildrenDo: aBlock [
 
 { #category : #accessing }
 BPAVLTreeNode >> right [
-	^ children second
+	^ children at: 2
 ]
 
 { #category : #accessing }

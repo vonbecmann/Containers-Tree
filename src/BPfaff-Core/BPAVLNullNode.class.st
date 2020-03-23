@@ -1,15 +1,28 @@
 Class {
 	#name : #BPAVLNullNode,
 	#superclass : #Object,
+	#classInstVars : [
+		'uniqueInstance'
+	],
 	#category : #'BPfaff-Core'
 }
+
+{ #category : #'initialization-release' }
+BPAVLNullNode class >> resetUniqueInstance [
+	uniqueInstance := nil
+]
+
+{ #category : #'instance creation' }
+BPAVLNullNode class >> uniqueInstance [
+	^ uniqueInstance ifNil: [ uniqueInstance := self new ]
+]
 
 { #category : #accessing }
 BPAVLNullNode >> balanceFactor [
 	^ 0
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #testing }
 BPAVLNullNode >> calculateBalanceFactor [
 	^ self balanceFactor
 ]

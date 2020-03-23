@@ -24,7 +24,7 @@ BPAVLTree >> add: anObject [
 			(self is: current model lessThan: anObject)
 				ifTrue: [ 
 					current direction: 2.
-					current balanceFactor isZero
+					current balanceFactor == 0
 						ifFalse: [ 
 							nonZeroNode := current.
 							nonZeroParentNode := parent ].
@@ -34,7 +34,7 @@ BPAVLTree >> add: anObject [
 					(self is: current model greaterThan: anObject)
 						ifTrue: [ 
 							current direction: 1.
-							current balanceFactor isZero
+							current balanceFactor == 0
 								ifFalse: [ 
 									nonZeroNode := current.
 									nonZeroParentNode := parent ].
@@ -156,7 +156,7 @@ BPAVLTree >> height [
 
 { #category : #initialization }
 BPAVLTree >> initialize [
-	root := BPAVLNullNode new
+	root := BPAVLNullNode uniqueInstance
 ]
 
 { #category : #private }
