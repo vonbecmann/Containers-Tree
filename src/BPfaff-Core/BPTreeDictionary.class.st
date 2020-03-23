@@ -78,5 +78,8 @@ BPTreeDictionary >> is: assoc lessThanKey: secondObject [
 { #category : #private }
 BPTreeDictionary >> newTreeNodeWith: anAssociation [
 	^ BPAVLTreeNode
-		with: 	(Association key: anAssociation key value: anAssociation value)
+		with:
+			(Association basicNew
+				key: anAssociation key
+				value: anAssociation value)
 ]

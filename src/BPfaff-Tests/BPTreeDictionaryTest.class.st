@@ -15,7 +15,6 @@ BPTreeDictionaryTest >> setUp [
 
 { #category : #tests }
 BPTreeDictionaryTest >> testAdd [
-	dict := BPTreeDictionary new.
 	dict add: #a -> 1.
 	dict add: #a -> 2.
 	self assert: dict size equals: 1
