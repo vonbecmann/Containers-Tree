@@ -17,6 +17,11 @@ BPAVLNullNode class >> uniqueInstance [
 	^ uniqueInstance ifNil: [ uniqueInstance := self new ]
 ]
 
+{ #category : #visiting }
+BPAVLNullNode >> acceptVisitor: aTreeVisitor [
+	aTreeVisitor visitNode: self
+]
+
 { #category : #accessing }
 BPAVLNullNode >> balanceFactor [
 	^ 0
