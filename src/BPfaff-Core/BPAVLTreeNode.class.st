@@ -15,6 +15,11 @@ BPAVLTreeNode class >> with: anObject [
 	^ self basicNew initializeModel: anObject
 ]
 
+{ #category : #visiting }
+BPAVLTreeNode >> acceptVisitor: aTreeVisitor [ 
+	aTreeVisitor visitNode: self
+]
+
 { #category : #accessing }
 BPAVLTreeNode >> balanceFactor [
 	"balance factor: For any node in an AVL tree (see AVL tree), the difference between the height of the node's right subtree and left subtree. "
@@ -56,27 +61,6 @@ BPAVLTreeNode >> childrenSize [
 	^ children size
 ]
 
-{ #category : #visiting }
-BPAVLTreeNode >> depthFirstWithPreOrder: preOrderBlock andPostOrder: postOrderBlock [
-	| visitStack |
-	visitStack := OrderedCollection
-		with: (Association key: self value: false).
-	[ visitStack isEmpty ]
-		whileFalse: [ | element node visited |
-			element := visitStack first.
-			node := element key.
-			visited := element value.
-			visited
-				ifTrue: [ 
-					visitStack removeFirst.
-					postOrderBlock ifNotNil: [ postOrderBlock cull: node ] ]
-				ifFalse: [ 
-					element value: true.
-					preOrderBlock ifNotNil: [ preOrderBlock cull: node ].
-					node reversedChildrenDo: [ :child | 
-						visitStack addFirst: (Association key: child value: false) ] ] ]
-]
-
 { #category : #private }
 BPAVLTreeNode >> direction: anInteger [
 	direction := anInteger
@@ -88,15 +72,15 @@ BPAVLTreeNode >> height [
 
 	| evalStack |
 	evalStack := OrderedCollection new.
-	self
-		depthFirstWithPreOrder: nil
-		andPostOrder: [ :node | 
+	BPDepthFirstVisitor new 
+		postOrderBlock: [ :node | 
 			node isNullNode
 				ifTrue: [ evalStack addFirst: node height ]
 				ifFalse: [ | heightChildren |
 					heightChildren := evalStack removeFirst: node childrenSize.
 					evalStack
-						addFirst: (heightChildren inject: 0 into: [ :max :each | max max: each ]) + 1 ] ].
+						addFirst: (heightChildren inject: 0 into: [ :max :each | max max: each ]) + 1 ] ];
+		visit: self.
 	^ evalStack first
 ]
 

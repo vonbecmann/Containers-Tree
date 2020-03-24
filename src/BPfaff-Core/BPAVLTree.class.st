@@ -14,6 +14,11 @@ BPAVLTree class >> with: anObject [
 		yourself
 ]
 
+{ #category : #visiting }
+BPAVLTree >> acceptVisitor: aTreeVisitor [
+	aTreeVisitor visitNode: root
+]
+
 { #category : #adding }
 BPAVLTree >> add: anObject [
 	| parent current nonZeroNode nonZeroParentNode newNode pivot |
@@ -54,41 +59,20 @@ BPAVLTree >> add: anObject [
 BPAVLTree >> arrayRepresentation [
 	| evalStack |
 	evalStack := OrderedCollection new.
-	self
-		depthFirstWithPreOrder: nil
-		andPostOrder: [ :node | 
+	BPDepthFirstVisitor new 
+	   	postOrderBlock: [ :node | 
 			node isNullNode
 				ifTrue: [ evalStack addFirst: #() ]
 				ifFalse: [ | heightChildren |
 					heightChildren := evalStack removeFirst: node childrenSize.
-					evalStack addFirst: (Array with: node model with: heightChildren reversed) ] ].
+					evalStack addFirst: (Array with: node model with: heightChildren reversed) ] ];
+		visit: self.
 	^ evalStack first
 ]
 
 { #category : #accessing }
 BPAVLTree >> balanceFactor [
 	^ root balanceFactor
-]
-
-{ #category : #visiting }
-BPAVLTree >> depthFirstWithPreOrder: preOrderBlock andPostOrder: postOrderBlock [
-	| visitStack |
-	visitStack := OrderedCollection
-		with: (Association key: root value: false).
-	[ visitStack isEmpty ]
-		whileFalse: [ | element node visited |
-			element := visitStack first.
-			node := element key.
-			visited := element value.
-			visited
-				ifTrue: [ 
-					visitStack removeFirst.
-					postOrderBlock ifNotNil: [ postOrderBlock cull: node ] ]
-				ifFalse: [ 
-					element value: true.
-					preOrderBlock ifNotNil: [ preOrderBlock cull: node ].
-					node reversedChildrenDo: [ :child | 
-						visitStack addFirst: (Association key: child value: false) ] ] ]
 ]
 
 { #category : #accessing }
