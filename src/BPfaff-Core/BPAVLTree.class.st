@@ -48,7 +48,7 @@ BPAVLTree >> add: anObject [
 		ifNotNull: [ parent childrenAtDirectionPut: newNode ].
 	nonZeroNode ifNull: [ ^ anObject ].
 	nonZeroNode updateBalanceFactorsUpTo: newNode.
-	pivot := self rebalance: nonZeroNode ifNotNecessary: [ ^ anObject ].
+	pivot := nonZeroNode rebalanceIfNotNecessary: [ ^ anObject ].
 	nonZeroParentNode
 		ifNull: [ root := pivot ]
 		ifNotNull: [ nonZeroParentNode childrenAtDirectionPut: pivot ].
@@ -114,64 +114,6 @@ BPAVLTree >> isEmpty [
 { #category : #private }
 BPAVLTree >> newTreeNodeWith: anObject [
 	^ BPAVLTreeNode with: anObject
-]
-
-{ #category : #private }
-BPAVLTree >> rebalance: nonZeroNode ifNotNecessary: aBlock [
-	| pivot |
-	nonZeroNode balanceFactor == -2
-		ifTrue: [ | leftChild |
-			leftChild := nonZeroNode left.
-			leftChild balanceFactor == -1
-				ifTrue: [ 
-					pivot := nonZeroNode rotateRight.
-					leftChild balanceFactorBeZero.
-					nonZeroNode balanceFactorBeZero ]
-				ifFalse: [ 
-					leftChild balanceFactor == 1
-						ifTrue: [ 
-							pivot := nonZeroNode rotateLeftThenRight.
-							pivot balanceFactor == -1
-								ifTrue: [ 
-									leftChild balanceFactorBeZero.
-									nonZeroNode balanceFactor: 1 ].
-							pivot balanceFactor == 0
-								ifTrue: [ 
-									leftChild balanceFactorBeZero.
-									nonZeroNode balanceFactorBeZero ].
-							pivot balanceFactor == 1
-								ifTrue: [ 
-									leftChild balanceFactor: -1.
-									nonZeroNode balanceFactorBeZero ].
-							pivot balanceFactorBeZero ] ] ]
-		ifFalse: [ 
-			nonZeroNode balanceFactor == 2
-				ifTrue: [ | rightChild |
-					rightChild := nonZeroNode right.
-					rightChild balanceFactor == 1
-						ifTrue: [ 
-							pivot := nonZeroNode rotateLeft.
-							rightChild balanceFactorBeZero.
-							nonZeroNode balanceFactorBeZero ]
-						ifFalse: [ 
-							rightChild balanceFactor == -1
-								ifTrue: [ 
-									pivot := nonZeroNode rotateRightThenLeft.
-									pivot balanceFactor == 1
-										ifTrue: [ 
-											rightChild balanceFactorBeZero.
-											nonZeroNode balanceFactor: -1 ].
-									pivot balanceFactor == 0
-										ifTrue: [ 
-											rightChild balanceFactorBeZero.
-											nonZeroNode balanceFactorBeZero ].
-									pivot balanceFactor == -1
-										ifTrue: [ 
-											rightChild balanceFactor: 1.
-											nonZeroNode balanceFactorBeZero ].
-									pivot balanceFactorBeZero ] ] ]
-				ifFalse: [ aBlock value ] ].
-	^ pivot
 ]
 
 { #category : #'initialize-release' }

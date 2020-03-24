@@ -136,6 +136,64 @@ BPAVLTreeNode >> printOn: aStream [
 	aStream nextPut: $)
 ]
 
+{ #category : #private }
+BPAVLTreeNode >> rebalanceIfNotNecessary: aBlock [
+	| pivot |
+	balanceFactor == -2
+		ifTrue: [ | leftChild |
+			leftChild := self left.
+			leftChild balanceFactor == -1
+				ifTrue: [ 
+					pivot := self rotateRight.
+					leftChild balanceFactorBeZero.
+					balanceFactor := 0 ]
+				ifFalse: [ 
+					leftChild balanceFactor == 1
+						ifTrue: [ 
+							pivot := self rotateLeftThenRight.
+							pivot balanceFactor == -1
+								ifTrue: [ 
+									leftChild balanceFactorBeZero.
+									balanceFactor := 1 ].
+							pivot balanceFactor == 0
+								ifTrue: [ 
+									leftChild balanceFactorBeZero.
+									balanceFactor := 0 ].
+							pivot balanceFactor == 1
+								ifTrue: [ 
+									leftChild balanceFactor: -1.
+									balanceFactor := 0 ].
+							pivot balanceFactorBeZero ] ] ]
+		ifFalse: [ 
+			balanceFactor == 2
+				ifTrue: [ | rightChild |
+					rightChild := self right.
+					rightChild balanceFactor == 1
+						ifTrue: [ 
+							pivot := self rotateLeft.
+							rightChild balanceFactorBeZero.
+							balanceFactor := 0 ]
+						ifFalse: [ 
+							rightChild balanceFactor == -1
+								ifTrue: [ 
+									pivot := self rotateRightThenLeft.
+									pivot balanceFactor == 1
+										ifTrue: [ 
+											rightChild balanceFactorBeZero.
+											balanceFactor := -1 ].
+									pivot balanceFactor == 0
+										ifTrue: [ 
+											rightChild balanceFactorBeZero.
+											balanceFactor := 0 ].
+									pivot balanceFactor == -1
+										ifTrue: [ 
+											rightChild balanceFactor: 1.
+											balanceFactor := 0 ].
+									pivot balanceFactorBeZero ] ] ]
+				ifFalse: [ aBlock value ] ].
+	^ pivot
+]
+
 { #category : #'initialize-release' }
 BPAVLTreeNode >> release [
 	model := nil.
