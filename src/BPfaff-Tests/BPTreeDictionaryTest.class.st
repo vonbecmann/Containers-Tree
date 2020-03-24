@@ -54,3 +54,14 @@ BPTreeDictionaryTest >> testAt2 [
 	self assert: (dict at: #a) equals: 3.
 	self assert: dict size equals: 1
 ]
+
+{ #category : #tests }
+BPTreeDictionaryTest >> testAtIfAbsent [
+	dict at: #a put: 1.
+	self assert: (dict at: #a ifAbsent: [ self error ]) equals: 1
+]
+
+{ #category : #tests }
+BPTreeDictionaryTest >> testAtIfAbsent1 [
+	self assert: (dict at: #a ifAbsent: [ 10 ]) equals: 10
+]

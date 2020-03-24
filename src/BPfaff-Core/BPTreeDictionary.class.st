@@ -6,6 +6,11 @@ Class {
 
 { #category : #accessing }
 BPTreeDictionary >> at: key [
+	^ self at: key ifAbsent: [ self errorKeyNotFound: key ]
+]
+
+{ #category : #accessing }
+BPTreeDictionary >> at: key ifAbsent: aBlock [
 	| current |
 	current := root.
 	[ current isNullNode ]
@@ -18,8 +23,8 @@ BPTreeDictionary >> at: key [
 						ifFalse: [ 
 							(self is: current model equalToKey: key)
 								ifTrue: [ ^ current model value ]
-								ifFalse: [ self errorKeyNotFound: key ] ] ] ].
-	self errorKeyNotFound: key
+								ifFalse: [ self error ] ] ] ].
+	^ aBlock value
 ]
 
 { #category : #accessing }
