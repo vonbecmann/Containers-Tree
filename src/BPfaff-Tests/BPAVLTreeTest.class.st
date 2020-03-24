@@ -212,6 +212,36 @@ BPAVLTreeTest >> testBalanceFactor5 [
 ]
 
 { #category : #tests }
+BPAVLTreeTest >> testBalanceFactor6 [
+	tree add: 6.
+	tree add: 4.
+	tree add: 5.
+	self assert: tree size equals: 3.
+	self assert: tree balanceFactor equals: 0.
+	self assert: tree isBalanceFactorCorrect
+]
+
+{ #category : #tests }
+BPAVLTreeTest >> testBalanceFactor7 [
+	tree add: 4.
+	tree add: 5.
+	tree add: 6.
+	self assert: tree size equals: 3.
+	self assert: tree balanceFactor equals: 0.
+	self assert: tree isBalanceFactorCorrect
+]
+
+{ #category : #tests }
+BPAVLTreeTest >> testBalanceFactor8 [
+	tree add: 4.
+	tree add: 6.
+	tree add: 5.
+	self assert: tree size equals: 3.
+	self assert: tree balanceFactor equals: 0.
+	self assert: tree isBalanceFactorCorrect
+]
+
+{ #category : #tests }
 BPAVLTreeTest >> testHeight [
 	self assert: tree height equals: 0
 ]
