@@ -26,14 +26,14 @@ BPAVLTree >> add: anObject [
 	current := nonZeroNode := nonZeroParentNode := root.
 	[ current isNullNode ]
 		whileFalse: [ (self is: current model lessThan: anObject)
-				ifTrue: [ current direction: 2.
+				ifTrue: [ current turnRight.
 					current balanceFactor == 0
 						ifFalse: [ nonZeroNode := current.
 							nonZeroParentNode := parent ].
 					parent := current.
 					current := current right ]
 				ifFalse: [ (self is: current model greaterThan: anObject)
-						ifTrue: [ current direction: 1.
+						ifTrue: [ current turnLeft.
 							current balanceFactor == 0
 								ifFalse: [ nonZeroNode := current.
 									nonZeroParentNode := parent ].

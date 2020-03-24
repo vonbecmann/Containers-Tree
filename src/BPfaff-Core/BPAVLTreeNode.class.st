@@ -61,11 +61,6 @@ BPAVLTreeNode >> childrenSize [
 	^ children size
 ]
 
-{ #category : #private }
-BPAVLTreeNode >> direction: anInteger [
-	direction := anInteger
-]
-
 { #category : #accessing }
 BPAVLTreeNode >> height [
 	"	^ (self left height max: self right height) + 1"
@@ -277,6 +272,16 @@ BPAVLTreeNode >> rotateRightThenLeft [
 { #category : #accessing }
 BPAVLTreeNode >> size [
 	^ 1 + self left size + self right size
+]
+
+{ #category : #private }
+BPAVLTreeNode >> turnLeft [
+	direction := 1
+]
+
+{ #category : #private }
+BPAVLTreeNode >> turnRight [
+	direction := 2
 ]
 
 { #category : #private }
