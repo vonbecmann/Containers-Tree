@@ -188,11 +188,11 @@ BPAVLTreeNode >> rotateLeft [
 3
  \
  4
-"
+Optimized."
 
 	| pivot |
-	pivot := self right.
-	self right: pivot left.
+	pivot := children at: 2.
+	children at: 2 put: pivot left.
 	pivot left: self.
 	^ pivot
 ]
@@ -217,10 +217,11 @@ BPAVLTreeNode >> rotateRight [
   5
  / 
 4
-"
+Optimized."
+
 	| pivot |
-	pivot := self left.
-	self left: pivot right.
+	pivot := children at: 1.
+	children at: 1 put: pivot right.
 	pivot right: self.
 	^ pivot
 ]
