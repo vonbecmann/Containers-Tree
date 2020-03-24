@@ -190,6 +190,12 @@ BPAVLTree >> rebalance: nonZeroNode ifNotNecessary: aBlock [
 	^ pivot
 ]
 
+{ #category : #'initialize-release' }
+BPAVLTree >> release [
+	root := nil.
+	super release
+]
+
 { #category : #accessing }
 BPAVLTree >> size [
 	^ root size

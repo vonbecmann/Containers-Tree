@@ -152,6 +152,13 @@ BPAVLTreeNode >> printOn: aStream [
 	aStream nextPut: $)
 ]
 
+{ #category : #'initialize-release' }
+BPAVLTreeNode >> release [
+	model := nil.
+	children := nil.
+	super release
+]
+
 { #category : #visiting }
 BPAVLTreeNode >> reversedChildrenDo: aBlock [
 	children reverseDo: aBlock
