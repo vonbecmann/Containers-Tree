@@ -9,6 +9,34 @@ BPTreeDictionary >> at: key [
 	^ self at: key ifAbsent: [ self errorKeyNotFound: key ]
 ]
 
+{ #category : #'nested dictionaries' }
+BPTreeDictionary >> at: firstKey at: secondKey [
+	"Return the object stored in the second dictionary at secondKey. The second dictionary is accessed via the key firstKey."
+
+	^ self
+		at: firstKey
+		at: secondKey
+		ifAbsent: [ self errorKeyNotFound: secondKey ]
+]
+
+{ #category : #'nested dictionaries' }
+BPTreeDictionary >> at: firstKey at: secondKey ifAbsent: aZeroArgBlock [
+	"Return the object stored in the second dictionary at secondKey. The second dictionary is accessed via the key firstKey. Execute aZeroArgBlock in case one of the key is wrong."
+
+	| subDictionary |
+	subDictionary := self at: firstKey ifAbsent: [ ^ aZeroArgBlock value ].
+	^ subDictionary at: secondKey ifAbsent: aZeroArgBlock
+]
+
+{ #category : #'nested dictionaries' }
+BPTreeDictionary >> at: firstKey at: secondKey put: aValue [
+	"Set a value at secondKey in the dictionary returned by firstKey."
+
+	| subDictionary |
+	subDictionary := self at: firstKey ifAbsentPut: [ self class new ].
+	^ subDictionary at: secondKey put: aValue
+]
+
 { #category : #accessing }
 BPTreeDictionary >> at: key ifAbsent: aBlock [
 	| current |

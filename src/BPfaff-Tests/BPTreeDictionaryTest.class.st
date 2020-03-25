@@ -55,6 +55,49 @@ BPTreeDictionaryTest >> testAt2 [
 	self assert: dict size equals: 1
 ]
 
+{ #category : #'tests-nested dictionaries' }
+BPTreeDictionaryTest >> testAtAt [
+	self should: [ dict at: #a at: #b ] raise: Error
+]
+
+{ #category : #'tests-nested dictionaries' }
+BPTreeDictionaryTest >> testAtAt1 [
+	dict at: #a at: #b put: 1.
+	self assert: (dict at: #a at: #b) equals: 1.
+	self assert: dict size equals: 1
+]
+
+{ #category : #'tests-nested dictionaries' }
+BPTreeDictionaryTest >> testAtAt2 [
+	dict at: #a at: #b put: 1.
+	dict at: #a at: #b put: 3.
+	self assert: (dict at: #a at: #b) equals: 3.
+	self assert: dict size equals: 1
+]
+
+{ #category : #'tests-nested dictionaries' }
+BPTreeDictionaryTest >> testAtAtIfAbsent [
+	dict at: #a at: #b put: 1.
+	self assert: (dict at: #a at: #b ifAbsent: [ self error ]) equals: 1
+]
+
+{ #category : #'tests-nested dictionaries' }
+BPTreeDictionaryTest >> testAtAtIfAbsent1 [
+	self assert: (dict at: #a at: #b ifAbsent: [ 10 ]) equals: 10
+]
+
+{ #category : #'tests-nested dictionaries' }
+BPTreeDictionaryTest >> testAtAtIfAbsent2 [
+	dict at: #a at: #c put: 1.
+	self assert: (dict at: #a at: #b ifAbsent: [ 10 ]) equals: 10
+]
+
+{ #category : #'tests-nested dictionaries' }
+BPTreeDictionaryTest >> testAtAtIfAbsent3 [
+	dict at: #a at: #b put: 3.
+	self assert: (dict at: #a at: #b ifAbsent: [ 10 ]) equals: 3
+]
+
 { #category : #tests }
 BPTreeDictionaryTest >> testAtIfAbsent [
 	dict at: #a put: 1.
