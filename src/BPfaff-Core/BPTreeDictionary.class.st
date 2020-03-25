@@ -37,6 +37,29 @@ BPTreeDictionary >> at: key ifAbsentPut: aBlock [
 ]
 
 { #category : #accessing }
+BPTreeDictionary >> at: key ifPresent: aBlock [
+	"Lookup the given key in the receiver. If it is present, answer the
+	value of evaluating the given block optionally with the value associated
+	with the key.
+	Otherwise, answer nil."
+
+	| current |
+	current := root.
+	[ current isNullNode ]
+		whileFalse: [ 
+			(self is: current model lessThanKey: key)
+				ifTrue: [ current := current right ]
+				ifFalse: [ 
+					(self is: current model greaterThanKey: key)
+						ifTrue: [ current := current left ]
+						ifFalse: [ 
+							(self is: current model equalToKey: key)
+								ifTrue: [ ^ aBlock cull: current model value ]
+								ifFalse: [ self error ] ] ] ].
+	^ nil
+]
+
+{ #category : #accessing }
 BPTreeDictionary >> at: key put: anObject [
 	self add: (Association basicNew key: key value: anObject).
 	^ anObject
