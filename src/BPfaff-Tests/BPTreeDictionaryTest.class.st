@@ -102,3 +102,18 @@ BPTreeDictionaryTest >> testAtIfPresentIfAbsent2 [
 		assert: (dict at: #a ifPresent: [ :v | self error ] ifAbsent: [ 42 ])
 		equals: 42
 ]
+
+{ #category : #tests }
+BPTreeDictionaryTest >> testAtIfPresentIfAbsentPut [
+	dict at: #a put: 2.
+	self
+		assert: (dict at: #a ifPresent: [ :v | v * 3 ] ifAbsentPut: [ self error ])
+		equals: 6
+]
+
+{ #category : #tests }
+BPTreeDictionaryTest >> testAtIfPresentIfAbsentPut2 [
+	self
+		assert: (dict at: #a ifPresent: [ :v | self error ] ifAbsentPut: [ 42 ])
+		equals: 42
+]
