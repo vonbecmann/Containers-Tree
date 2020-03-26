@@ -29,6 +29,33 @@ BPTreeDictionary >> at: firstKey at: secondKey ifAbsent: aZeroArgBlock [
 ]
 
 { #category : #'nested dictionaries' }
+BPTreeDictionary >> at: firstKey at: secondKey ifAbsentPut: aZeroArgBlock [
+	| subDictionary |
+	subDictionary := self at: firstKey ifAbsentPut: [ self class new ].
+	^ subDictionary at: secondKey ifAbsentPut: aZeroArgBlock
+]
+
+{ #category : #'nested dictionaries' }
+BPTreeDictionary >> at: firstKey at: secondKey ifPresent: aPresentBlock ifAbsent: aZeroArgBlock [
+	| subDictionary |
+	subDictionary := self at: firstKey ifAbsentPut: [ self class new ].
+	^ subDictionary
+		at: secondKey
+		ifPresent: aPresentBlock
+		ifAbsent: aZeroArgBlock
+]
+
+{ #category : #'nested dictionaries' }
+BPTreeDictionary >> at: firstKey at: secondKey ifPresent: aPresentBlock ifAbsentPut: aZeroArgBlock [
+	| subDictionary |
+	subDictionary := self at: firstKey ifAbsentPut: [ self class new ].
+	^ subDictionary
+		at: secondKey
+		ifPresent: aPresentBlock
+		ifAbsentPut: aZeroArgBlock
+]
+
+{ #category : #'nested dictionaries' }
 BPTreeDictionary >> at: firstKey at: secondKey put: aValue [
 	"Set a value at secondKey in the dictionary returned by firstKey."
 

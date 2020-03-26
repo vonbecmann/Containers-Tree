@@ -98,6 +98,43 @@ BPTreeDictionaryTest >> testAtAtIfAbsent3 [
 	self assert: (dict at: #a at: #b ifAbsent: [ 10 ]) equals: 3
 ]
 
+{ #category : #'tests-nested dictionaries' }
+BPTreeDictionaryTest >> testAtAtIfAbsentPut [
+	dict at: #a at: #b put: 1.
+	self
+		assert: (dict at: #a at: #b ifAbsentPut: [ self error ])
+		equals: 1
+]
+
+{ #category : #'tests-nested dictionaries' }
+BPTreeDictionaryTest >> testAtAtIfAbsentPut1 [
+	self assert: (dict at: #a at: #b ifAbsentPut: [ 10 ]) equals: 10.
+	self assert: (dict at: #a at: #b) equals: 10
+]
+
+{ #category : #'tests-nested dictionaries' }
+BPTreeDictionaryTest >> testAtAtIfPresentIfAbsent [
+	dict at: #a at: #b put: 1.
+	self
+		assert:
+			(dict
+				at: #a
+				at: #b
+				ifPresent: [ true ]
+				ifAbsent: [ self error ])
+]
+
+{ #category : #'tests-nested dictionaries' }
+BPTreeDictionaryTest >> testAtAtIfPresentIfAbsent1 [
+	self
+		assert:
+			(dict
+				at: #a
+				at: #b
+				ifPresent: [ self error ]
+				ifAbsent: [ true ])
+]
+
 { #category : #tests }
 BPTreeDictionaryTest >> testAtIfAbsent [
 	dict at: #a put: 1.
